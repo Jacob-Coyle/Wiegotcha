@@ -114,7 +114,7 @@ echo 'Wiegotcha' > /etc/hostname
 
 #Insatlling WiringPi
 echo "[*] Installing WiringPi."
-git clone git://git.drogon.net/wiringPi 
+git clone https://github.com/WiringPi/WiringPi
 cd wiringPi
 ./build
 cd ~/
@@ -132,8 +132,12 @@ cp ./confs/rctmp.local /etc/rc.local
 cp ./laststep.sh ../
 mkdir /var/www/html/backup/
 sed -i 's|#DAEMON_CONF=""|DAEMON_CONF=/etc/hostapd/hostapd.conf|g' /etc/default/hostapd
+sed -i 's|INTERFACESv4=""|INTERFACESv4="wlan0"|g' /etc/default/dhcpd
+sed -i 's|INTERFACESv6=""|#INTERFACESv6=""|g' /etc/default/dhcpd
 echo "[*] Compiling Wiegotcha C code"
 gcc -o ../wiegotcha wiegotcha.c -L/usr/local/lib -lwiringPi -lpthread
+systemctl unmask hostapd
+systemctl enabled hostapd
 
 #Enable i2c on boot for hardware clock
 #TODO: This is currently done via raspi-config.
