@@ -142,12 +142,9 @@ systemctl enabled hostapd
 #Enable i2c on boot for hardware clock
 #TODO: This is currently done via raspi-config.
 #TODO: Hoping to eliminate the interaction.
-echo "[+] Enabling i2c on boot."
-echo -e "\e[0;31m[+] This step requires the use of raspi-config, which is a manual process\e[0m."
-echo -e "\e[0;31m[+] Use Interfacing Options (5), then I2C (P5), yes, then finish.\e[0m"
-echo -n -e "\e[0;31m[+] When you're ready, press any key to continue: \e[0m"
-read -e NULL
-raspi-config
+echo "[+] Enabling SSH and I2C on boot."
+raspi-config nonint do_i2c 0
+raspi-config nonint do_ssh 0
 echo -e "\e[0;31m[+] The system will now reboot. After reboot, login then 'sudo su -' (or login as root)\e[0m"
 echo -e "\e[0;31m[+] Once you're root, type 'screen -dr install' to complete the installation.\e[0m"
 reboot
